@@ -15,12 +15,16 @@
 set -e
 
 # default notification for master branch if not specified
-if [ -z ${NOTIFY_BRANCH} ]; then
+if [ -z "${NOTIFY_BRANCH}" ]; then
     NOTIFY_BRANCH="master"
 fi
 
 message="{\"text\": \"*${BUILD_STATUS}*: build <${CIRCLE_BUILD_URL}|#${CIRCLE_BUILD_NUM}> in *${CIRCLE_PROJECT_REPONAME}* (_${CIRCLE_BRANCH}_:${CIRCLE_SHA1})\"}"
 
-if [ ${CIRCLE_BRANCH} == ${NOTIFY_BRANCH} ] ; then
-    curl -X POST -H 'Content-type: application/json' --data "${message}" ${SLACK_WEBHOOK_URL}
-fi
+for branch in ${NOTIFY_BRANCH} ; do
+    if [ "${CIRCLE_BRANCH}" == ${branch} ]; then
+        curl -X POST -H 'Content-type: application/json' --data "${message}" ${SLACK_WEBHOOK_URL}
+        break
+    fi
+done
+
