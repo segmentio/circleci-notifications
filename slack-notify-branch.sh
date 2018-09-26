@@ -19,7 +19,7 @@ if [ -z ${NOTIFY_BRANCH} ]; then
     NOTIFY_BRANCH="master"
 fi
 
-message="{\"text\": \"*${BUILD_STATUS}*: build <${CIRCLE_BUILD_URL}|#${CIRCLE_BUILD_NUM}> in *${CIRCLE_PROJECT_REPONAME}* (_${CIRCLE_BRANCH}_:<${CIRCLE_COMPARE_URL}|${CIRCLE_SHA1}>)\"}"
+message="{\"text\": \"*${BUILD_STATUS}*: build <${CIRCLE_BUILD_URL}|#${CIRCLE_BUILD_NUM}> in *${CIRCLE_PROJECT_REPONAME}* (_${CIRCLE_BRANCH}_:${CIRCLE_SHA1})\"}"
 
 if [ ${CIRCLE_BRANCH} == ${NOTIFY_BRANCH} ] ; then
     curl -X POST -H 'Content-type: application/json' --data "${message}" ${SLACK_WEBHOOK_URL}
